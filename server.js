@@ -34,12 +34,61 @@ app.post('/users', async (req, res) => {
 // Fazendo uma requisição no servidor
 app.get('/users', async (req, res) => {
 
-    const user = await prisma.user.findMany()
+    let user = []
+
+    // REFAZER COMENTÁRIO
+    if(req.query) {
+        user = await prisma.user.findMany({
+            where: {
+                name: req.query.name
+            }
+        })
+    } else {
+        user = await prisma.user.findMany()
+    }
 
     // Resposta do servidor
     // res.json(user)
     res.status(200).json(user)
 })
+
+// Editando usuários pela "ID" (variável)
+app.put('/users/:id', async (req, res) => {
+
+    // Escreve o que foi enviado
+    // console.log(req.body)
+
+    // Procura e edita copiando as novas informações
+    await prisma.user.update({
+        where: { // pega o id da URL
+            id: req.params.id
+        },
+        data: {
+            email: req.body.email,
+            name: req.body.name,
+            age: req.body.age
+        }
+    })
+
+    // FAZER O RESTO DOS COMENTÁRIOS
+    res.status(200).json({message: ' edit feito com sucesso! '})
+})
+
+app.delete('/users/:id', async(req, res) => {
+    await prisma.user.delete({
+        where: {
+            id: req.params.id
+        }
+    })
+
+    res.status(200).json({message: ' Usuário deletado com Sucesso!'})
+
+
+})
+
+
+
+
 
 // Criando a porta do servidor
 app.listen(3000)
