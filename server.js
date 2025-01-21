@@ -6,7 +6,7 @@ const prisma = new PrismaClient() // Guarda tudo do prima aqui
 const app = express(); // Chamando função express()
 app.use(express.json()) // Faz express poder ler .json
 
-const user = []
+// const user = []            DELETADO POR FALTA DE USO
 
 // Define uma rota HTTP POST e chama função fornecida
 app.post('/users', async (req, res) => {
@@ -32,12 +32,13 @@ app.post('/users', async (req, res) => {
 })
 
 // Fazendo uma requisição no servidor
-app.get('/users', (req, res) => {
+app.get('/users', async (req, res) => {
 
+    const user = await prisma.user.findMany()
 
     // Resposta do servidor
     // res.json(user)
-    res.status(200).json(prisma.user.count())
+    res.status(200).json(user)
 })
 
 // Criando a porta do servidor

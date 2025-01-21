@@ -37,3 +37,6 @@ model User {
 
 ligar studio
 - npx prisma studio
+
+ligar dev
+- node --watch server.js
