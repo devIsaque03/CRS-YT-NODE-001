@@ -1,4 +1,7 @@
 import express from 'express' // importando o módulo 'express'
+import { PrismaClient } from '@prisma/client' // importa o servidor
+
+const prisma = new PrismaClient() // Guarda tudo do prima aqui
 
 const app = express(); // Chamando função express()
 app.use(express.json()) // Faz express poder ler .json
@@ -6,10 +9,21 @@ app.use(express.json()) // Faz express poder ler .json
 const user = []
 
 // Define uma rota HTTP POST e chama função fornecida
-app.post('/users', (req, res) => {
+app.post('/users', async (req, res) => {
+
+    // Req.body é por causa da extenção, é a requisição que a extenção faz
 
     // Adicionando os dados enviados na requisição ao array user.
-    user.push(req.body)
+    // user.push(req.body)
+
+    // Adiciona usuários usando o prima
+     await prisma.user.create({
+        data: {
+            email: req.body.email,
+            name: req.body.name,
+            age: req.body.age
+        }
+    }) 
 
     // Escreve os dados enviados e confirma o envio
     // console.log(req.body);
@@ -23,7 +37,7 @@ app.get('/users', (req, res) => {
 
     // Resposta do servidor
     // res.json(user)
-    res.status(200).json(user)
+    res.status(200).json(prisma.user.count())
 })
 
 // Criando a porta do servidor
