@@ -36,8 +36,12 @@ app.get('/users', async (req, res) => {
 
     let user = []
 
-    // REFAZER COMENTÁRIO
+    /** Filtro de vai mostrar um usuário ou vários
+     *  Query vai o filtro se tiver, caso tenha um nome terá na Query */
     if(req.query) {
+
+        /** Se tiver uma query, compare todos os itens com a query e 
+         *  mostre os que estão iguais */
         user = await prisma.user.findMany({
             where: {
                 name: req.query.name,
@@ -46,6 +50,8 @@ app.get('/users', async (req, res) => {
             }
         })
     } else {
+
+        // Caso não tenha Query (filtro), mostre todos
         user = await prisma.user.findMany()
     }
 
@@ -62,35 +68,35 @@ app.put('/users/:id', async (req, res) => {
 
     // Procura e edita copiando as novas informações
     await prisma.user.update({
-        where: { // pega o id da URL
+        where: { 
+            // pega o id da URL
             id: req.params.id
         },
         data: {
+            // Copia o que está no req
             email: req.body.email,
             name: req.body.name,
             age: req.body.age
         }
     })
 
-    // FAZER O RESTO DOS COMENTÁRIOS
+    // Resposta do servidor
     res.status(200).json({message: ' edit feito com sucesso! '})
 })
 
+// Deletando pela ID
 app.delete('/users/:id', async(req, res) => {
+
+    // procura o usuário que tem o ID da URL e o exclui
     await prisma.user.delete({
         where: {
             id: req.params.id
         }
     })
 
-    res.status(200).json({message: ' Usuário deletado com Sucesso!'})
-
-
+    // Resposta do servidor
+    res.status(200).json({message: ' Usuário deletado com Sucesso! '})
 })
-
-
-
-
 
 // Criando a porta do servidor
 app.listen(3000)
