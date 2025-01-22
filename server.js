@@ -1,9 +1,12 @@
 import express from 'express' // importando o módulo 'express'
 import { PrismaClient } from '@prisma/client' // importa o servidor
+import cors from 'cors'; // Biblioteca que permite conexões de outras URL's
 
 const prisma = new PrismaClient() // Guarda tudo do prima aqui
 
 const app = express(); // Chamando função express()
+app.use(cors()); // Permite o acesso de origens diferentes
+
 app.use(express.json()) // Faz express poder ler .json
 
 // const user = []            DELETADO POR FALTA DE USO

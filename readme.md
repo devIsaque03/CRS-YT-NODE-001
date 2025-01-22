@@ -1,3 +1,10 @@
+Ligar:
+- node --watch server.js
+- npx prisma studio
+
+------------------------------------------------------------------------
+INSTRUÇÕES PRA MONTAR
+
 - npm init -y
 
 Criar 'server.js'
@@ -40,3 +47,6 @@ ligar studio
 
 ligar dev
 - node --watch server.js
+
+instalar cors
+- npm install cors
